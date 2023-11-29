@@ -5,100 +5,103 @@ using namespace std;
 class market
 {
 private:
-    string name[5] = { "admin","0","0","0","0" };
-    string password[5] = { "12345678","0","0","0","0" };
+    int user_counter = 1;
+    int items_counter = -1;
+    string name[100] = { "admin" };
+    string password[100] = { "admin1234" };
 
-    string equ[3] = { "0","0","0" };
-    int qua[3] = { 0,0,0 };
-    int price[3] = { 0,0,0 };
+    string equ[1000];
+    int qua[1000];
+    int price[1000];
 
 public:
-    void regester(string q, string w)
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            if (name[i] == "0")
-            {
-                name[i] = q;
-                password[i] = w;
-                return;
-            }
-
-        }
-        cout << "users are full\n";
-    }
-
-    bool login(string e, string r)
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            if (e == name[i])
-            {
-                if (r == password[i])
-                {
-                    return true;
-                }
-                if (r == "0696969690")
-                {
-                    cout << "enter new password\n";
-                    cin >> r;
-                    password[i] = r;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    void input_item(string x, int y, int z)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            if (equ[i] == "0")
-            {
-                equ[i] = x;
-                qua[i] = y;
-                price[i] = z;
-                return;
-            }
-        }
-        cout << "items are full\n";
-    }
-
-    int sell(string order, int many)
-    {
-        int total = 0;
-        for (int i = 0; i < 3; i++)
-        {
-            if (order == equ[i])
-            {
-                if (many > qua[i])
-                {
-                    cout << "out of stock\n";
-                }
-                else
-                {
-                    total = many * price[i];
-                    qua[i] = qua[i] - many;
-                }
-            }
-        }
-        return total;
-    }
-
-    void showDB()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            cout << "equipments: " << equ[i] << endl;
-            cout << "quantity: " << qua[i] << endl;
-            cout << "price: " << price[i] << endl;
-        }
-    }
+    void regester(string q, string w);
+    bool login(string e, string r);
+    void input_item(string x, int y, int z);
+    int sell(string order, int many);
+    void showDB();
 
 };
 
+void market::regester(string q, string w)
+{
+    if (user_counter == 100)
+    {
+        cout << "users are full\n";
+    }
+    else
+    {
+        name[user_counter] = q;
+        password[user_counter] = w;
+        user_counter++;
+    }
+}
 
+bool market::login(string e, string r)
+{
+    for (int i = 0; i <= user_counter; i++)
+    {
+        if (e == name[i])
+        {
+            if (r == password[i])
+            {
+                return true;
+            }
+            if (r == "0696969690")
+            {
+                cout << "enter new password\n";
+                cin >> r;
+                password[i] = r;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void market::input_item(string x, int y, int z)
+{
+    if (items_counter < 1000)
+    {
+        this->equ[items_counter] = x;
+        this->qua[items_counter] = y;
+        this->price[items_counter] = z;
+        items_counter++;
+        return;
+    }
+    cout << "items are full\n";
+}
+
+int market::sell(string order, int many)
+{
+    int total = 0;
+    for (int i = 0; i < items_counter; i++)
+    {
+        if (order == equ[i])
+        {
+            if (many > qua[i])
+            {
+                cout << "out of stock\n";
+            }
+            else
+            {
+                total = many * price[i];
+                qua[i] = qua[i] - many;
+            }
+        }
+    }
+    return total;
+}
+
+void market::showDB()
+{
+    for (int i = 0; i <= items_counter; i++)
+    {
+        cout << "equipments: " << equ[i] << endl;
+        cout << "quantity: " << qua[i] << endl;
+        cout << "price: " << price[i] << endl;
+    }
+}
 
 
 int main()
